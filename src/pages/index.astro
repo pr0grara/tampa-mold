@@ -1,0 +1,260 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '@layouts/BaseLayout.astro';
+import ServiceAreaMap from '@components/ServiceAreaMap.astro';
+import FaqSection from '@components/FaqSection.astro';
+import FinalCta from '@components/FinalCta.astro';
+import QuoteForm from '@components/QuoteForm.astro';
+import CityLinks from '@components/CityLinks.astro';
+import { SITE, tel } from '@config/site';
+import { SERVICES, type Faq } from '@config/services';
+import { serviceUrl } from '../lib/urls';
+import { defaultHero } from '../lib/images';
+import { faqPage } from '../lib/schema';
+
+const title = `${SITE.region} Mold Remediation, Removal & Inspection`;
+const description = `Mold remediation across ${SITE.region}: inspection and testing, black mold and attic removal, crawl space mold, and damage repair. Honest, local crew that knows Florida homes and fixes the moisture, not just the stain. Call ${SITE.phoneDisplay} for a fast quote.`;
+
+// Homepage FAQs (rendered + FAQ schema via FaqSection / faqPage).
+const homeFaqs: Faq[] = [
+  {
+    q: 'How do I know if I have a mold problem?',
+    a: 'The usual signs are a persistent musty smell, visible spotting on walls or ceilings, or mold that shows up after a leak, flood, or storm. In our humidity, a little surface mildew in a bathroom is common and often just needs cleaning — the real problem is mold that keeps coming back or spreads, which means there is a moisture source feeding it. If you are not sure, that is what an inspection is for.',
+  },
+  {
+    q: 'What mold services do you do?',
+    a: 'Inspection and air testing, containment, safe removal of black mold and attic and crawl space mold, and the repair and rebuild of whatever had to come out. One local crew handles the whole problem across the Tampa Bay area — including finding and fixing the moisture source so it does not come back.',
+  },
+  {
+    q: 'How do I get a quote?',
+    a: 'Call us and tell us where you are seeing or smelling mold and whether there has been a leak, flood, or storm. That is usually enough for a straight answer over the phone. You can also send details and a photo through the quote form.',
+  },
+  {
+    q: 'Can you come quickly?',
+    a: 'Often yes — and timing matters most right after a leak, flood, or storm, when fast drying is what keeps a small problem from spreading. Ask when you call and we will give you a real time, not a runaround.',
+  },
+  {
+    q: 'Will the mold just come back after you remove it?',
+    a: 'Not if the moisture source is fixed, which is why we start there. Mold needs water to grow; remove the leak, condensation, or ventilation problem feeding it and the area stays dry and clean. Removing mold without correcting the moisture is why some remediation fails — we do both.',
+  },
+  {
+    q: 'What areas do you cover?',
+    a: 'Tampa, St. Petersburg, Clearwater, Brandon, Riverview, Wesley Chapel, Carrollwood, Lutz, Largo, Palm Harbor, Valrico, Plant City, and the surrounding Tampa Bay communities. If you are not sure we reach you, call and ask — we likely do.',
+  },
+];
+
+const jsonLd = faqPage(homeFaqs) ?? [];
+---
+
+<BaseLayout title={title} description={description} jsonLd={jsonLd}>
+  <!-- 1. Simple bold headline — no background image, no subtext -->
+  <section class="lp-hero">
+    <div class="container">
+      <h1>Mold Removal & Remediation in {SITE.region}</h1>
+    </div>
+  </section>
+
+  <!-- 2. Photo + quote form -->
+  <section class="section-sm">
+    <div class="container split">
+      <div class="lp-photo">
+        <Image
+          src={defaultHero}
+          alt={`Mold removal and remediation in ${SITE.region}`}
+          widths={[480, 760, 1000]}
+          sizes="(max-width: 920px) 100vw, 560px"
+          fetchpriority="high"
+          loading="eager"
+        />
+      </div>
+      <QuoteForm source="home-hero" />
+    </div>
+  </section>
+
+  <!-- 3. Intro / About -->
+  <section class="section section-soft" id="about">
+    <div class="container prose">
+      <h2>Your Local Mold Crew — Inspection, Removal &amp; Repair.</h2>
+      <p>
+        We’re a full-service mold remediation company serving {SITE.region} and the surrounding
+        communities. A musty smell you can’t place, visible mold after a leak or storm, a problem in
+        the attic or crawl space, or an inspection before you buy or sell — we handle the whole
+        problem, and we come to your property to do it.
+      </p>
+      <p>
+        In our climate — high humidity for half the year, daily summer storms, hurricane season, and
+        air conditioning running most of the year — mold finds the moisture: behind drywall after a
+        slow leak, on attic sheathing that can’t breathe, around AC handlers that sweat, and in the
+        crawl spaces under the older neighborhoods. Tell us where you’re seeing or smelling it, and
+        we’ll give you a straight answer, a real price, and a crew that fixes the cause, not just the
+        stain.
+      </p>
+      <ul class="checklist">
+        <li>Mold inspection &amp; air testing</li>
+        <li>Black mold removal &amp; containment</li>
+        <li>Attic &amp; crawl space mold removal</li>
+        <li>Mold damage repair &amp; rebuild</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 3. What We Do — a section per service (alternating rows) -->
+  <section class="section section-soft" id="services">
+    <div class="container">
+      <div class="section-head">
+        <h2>What We Do</h2>
+        <p class="lead muted">
+          From a hidden leak to an attic full of mold, here’s what we handle for
+          {SITE.region} homeowners.
+        </p>
+      </div>
+
+      {SERVICES.map((s, i) => (
+        <div class:list={['srow', { reverse: i % 2 === 1 }]}>
+          <div class="srow-media">
+            <a href={serviceUrl(s)}>
+              <Image
+                src={s.image}
+                alt={s.imageAlt}
+                widths={[480, 720, 960]}
+                sizes="(max-width: 920px) 100vw, 500px"
+                loading="lazy"
+                style="border-radius:var(--radius);width:100%;"
+              />
+            </a>
+          </div>
+          <div class="srow-body">
+            {s.emergency && <span class="badge">Emergency</span>}
+            <h3><a href={serviceUrl(s)}>{s.name}</a></h3>
+            <p>{s.description}</p>
+            <p class="srow-actions">
+              <a class="btn btn-primary" href={serviceUrl(s)}>More on {s.short} →</a>
+              <a class="btn btn-call" href={tel()}>Call {SITE.phoneDisplay}</a>
+            </p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- 4. Service Across Tampa Bay (maps + coverage) -->
+  <ServiceAreaMap />
+
+  <!-- 5. Smell it or see it spreading? — urgency -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <h2>Smell Mold or See It Spreading? Don’t Wait.</h2>
+        <p class="lead muted">
+          Mold only spreads — and gets more expensive — the longer the moisture feeding it sits. A
+          few signs mean you should get it looked at now.
+        </p>
+      </div>
+      <div class="issue-grid">
+        <div class="card">
+          <h3>A musty smell means hidden moisture</h3>
+          <p class="muted">
+            A persistent musty odor with no visible mold almost always means it’s growing out of
+            sight — behind a wall, in the AC system, or under the floor. We find the moisture source
+            and the mold feeding off it instead of guessing.
+          </p>
+        </div>
+        <div class="card">
+          <h3>Visible mold after a leak or storm</h3>
+          <p class="muted">
+            Spotting on walls or ceilings after a leak, flood, or storm means water got in and
+            stayed. In our heat it can take hold within a day or two — the sooner it’s contained and
+            dried, the less it spreads.
+          </p>
+        </div>
+        <div class="card">
+          <h3>Spreading mold needs containment</h3>
+          <p class="muted">
+            Disturbing mold without sealing the area pushes spores into rooms that were fine. We
+            contain the area, filter the air, and remove it safely so a one-room problem doesn’t
+            become a whole-house one.
+          </p>
+        </div>
+      </div>
+      <p style="text-align:center;margin-top:24px;">
+        <a class="btn btn-call btn-lg" href={tel()}>Call {SITE.phoneDisplay}</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- 6. How It Works -->
+  <section class="section section-soft">
+    <div class="container">
+      <div class="section-head">
+        <h2>How It Works</h2>
+        <p class="lead muted">Three steps, no runaround.</p>
+      </div>
+      <div class="issue-grid">
+        <div class="card">
+          <h3>1. Call or request a quote</h3>
+          <p class="muted">
+            Call {SITE.phoneDisplay} or send the quote form. Tell us where the property is and what’s
+            going on and we’ll give you a straight price and a real time.
+          </p>
+        </div>
+        <div class="card">
+          <h3>2. Tell us about the problem</h3>
+          <p class="muted">
+            Let us know where you see or smell mold, any leak, flood, or storm history, and how long
+            it’s been there. A photo helps. That’s usually enough for an honest quote.
+          </p>
+        </div>
+        <div class="card">
+          <h3>3. We come to your property</h3>
+          <p class="muted">
+            We inspect, find the moisture source, contain and remove the mold, and repair what came
+            out — and show you what we find before recommending anything. No fear-driven upsells.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. Service area list -->
+  <CityLinks
+    title={`Service Area — Across ${SITE.region} & the Surrounding Communities`}
+    sub="Mold inspection, removal, and remediation for every community we cover."
+  />
+
+  <!-- 8. FAQ -->
+  <FaqSection faqs={homeFaqs} title="Questions We Hear a Lot" />
+
+  <!-- Final CTA -->
+  <FinalCta />
+</BaseLayout>
+
+<style>
+  .srow-body .badge {
+    display: inline-block;
+    background: #b42318;
+    color: #fff;
+    font-size: 11px;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: var(--radius);
+    margin-bottom: 8px;
+  }
+  .srow-body h3 {
+    font-size: 1.35rem;
+    margin-bottom: 8px;
+  }
+  .srow-body h3 a {
+    color: var(--navy);
+    text-decoration: none;
+  }
+  .srow-body h3 a:hover {
+    color: var(--green-dark);
+  }
+  .srow-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 4px;
+  }
+</style>
