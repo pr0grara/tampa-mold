@@ -15,11 +15,11 @@ resizes/compresses them at build; only the optimized variants ship.
 
 ## ⚠️ These are PLACEHOLDERS
 
-The current images are **free-licensed septic photos pulled from Wikimedia Commons** so the build
-resolves and the site looks like a real septic business, not broken. They are generic stock — pump
-trucks, open tanks, and a drain-field trench, none of them shot in Western NC. **Replace them with
-real job photos before launch** — real local proof (your actual truck, a tank being pumped on a
-mountain lot, your crew on a Buncombe County property) is load-bearing for this kind of site
+The current images are **free-licensed mold-remediation photos pulled from Wikimedia Commons** so the build
+resolves and the site looks like a real mold business, not broken. They are generic stock — containment
+barriers, attic sheathing, and crawl-space framing, none of them shot in the Tampa Bay area. **Replace them with
+real job photos before launch** — real local proof (your actual crew, mold being removed in a
+Tampa home, a crawl space on a Hillsborough County property) is load-bearing for this kind of site
 (see SPEC §2). Keep the same filenames (or update the `import`s in `src/config/services.ts`) so
 nothing breaks.
 
@@ -33,13 +33,12 @@ nothing breaks.
 | File | Used by |
 |---|---|
 | `hero/hero.jpg` | site-wide default hero (`src/lib/images.ts` → `defaultHero`) + source for `public/og.jpg` |
-| `services/septic-services.jpg` | `septic-services` service (hub catch-all) |
-| `services/septic-tank-pumping.jpg` | `septic-tank-pumping` service |
-| `services/septic-tank-cleaning.jpg` | `septic-tank-cleaning` service |
-| `services/septic-system-repair.jpg` | `septic-system-repair` service |
-| `services/septic-inspections.jpg` | `septic-inspections` service |
-| `services/drain-field-repair.jpg` | `drain-field-repair` service |
-| `services/emergency-septic-service.jpg` | `emergency-septic-service` service (emergency) |
+| `services/mold-remediation.jpg` | `mold-remediation` service (hub catch-all) |
+| `services/mold-inspection-testing.jpg` | `mold-inspection-testing` service |
+| `services/black-mold-removal.jpg` | `black-mold-removal` service |
+| `services/attic-mold-removal.jpg` | `attic-mold-removal` service |
+| `services/crawl-space-mold-removal.jpg` | `crawl-space-mold-removal` service |
+| `services/mold-damage-repair.jpg` | `mold-damage-repair` service |
 
 Service photos are imported at the top of `src/config/services.ts`. Per-city overrides go in
 `city.serviceImages` / `city.heroImage` in `src/config/cities.ts`.
