@@ -13,6 +13,7 @@ import { SITE, tel } from '@config/site';
 import { getHeroUrl } from '../../lib/images';
 import { serviceUrl, cityServiceUrl, cityUrl } from '../../lib/urls';
 import { breadcrumb, serviceSchema, faqPage } from '../../lib/schema';
+import { isComboIndexed } from '@config/indexing';
 
 export function getStaticPaths() {
   const paths = [];
@@ -32,6 +33,9 @@ const photo = city.serviceImages?.[service.slug] ?? service.image;
 const heroUrl = await getHeroUrl(city.heroImage ?? service.image);
 const where = city.state ? `${city.name}, ${city.state}` : city.name;
 const near = nearbyCities(city);
+
+// EXP-004: unlocked cities render index,follow; every other city stays noindexed.
+const indexed = isComboIndexed(service.slug, city.slug);
 
 // City + service FAQs combined (dedupe by question).
 const combinedFaqs = [...city.faqs, ...service.faqs].filter(
@@ -57,7 +61,7 @@ const faqLd = faqPage(combinedFaqs);
 if (faqLd) jsonLd.push(faqLd);
 ---
 
-<BaseLayout title={title} description={description} heroPreload={heroUrl} jsonLd={jsonLd} noindex={true}>
+<BaseLayout title={title} description={description} heroPreload={heroUrl} jsonLd={jsonLd} noindex={!indexed}>
   <!-- Hero -->
   <section class="hero-single" style={`background-image:url('${heroUrl}')`}>
     <div class="container">
