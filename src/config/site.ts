@@ -37,8 +37,8 @@ export const SITE: SiteConfig = {
   company: 'Suncoast Mold Remediation',
   tagline: 'Mold Inspection, Removal & Remediation',
   trade: 'mold remediation',
-  phone: '+18135550182', // PLACEHOLDER — replace with real dialable number
-  phoneDisplay: '(813) 555-0182', // PLACEHOLDER
+  phone: '+18132854565', // Twilio tracking number (Tampa/Eastern) — forwards to Ara, logs to /admin/leads
+  phoneDisplay: '(813) 285-4565',
   email: 'service@suncoastmoldremoval.com', // PLACEHOLDER local-part — confirm the real inbox
   region: 'Tampa Bay',
   url: 'https://suncoastmoldremoval.com', // register, then keep in sync with astro.config.mjs
