@@ -8,9 +8,11 @@ import CommonIssues from '@components/CommonIssues.astro';
 import NearbyCities from '@components/NearbyCities.astro';
 import FinalCta from '@components/FinalCta.astro';
 import { CITIES, nearbyCities, type City } from '@config/cities';
+import { MATRIX_SERVICES } from '@config/services';
+import { INDEXED_COMBO_CITIES } from '@config/indexing';
 import { SITE, tel } from '@config/site';
 import { getHeroUrl } from '../../lib/images';
-import { cityUrl } from '../../lib/urls';
+import { cityUrl, cityServiceUrl } from '../../lib/urls';
 import { breadcrumb, faqPage } from '../../lib/schema';
 
 export function getStaticPaths() {
@@ -84,6 +86,35 @@ if (faqLd) jsonLd.push(faqLd);
       />
     </div>
   </section>
+
+  <!--
+    Text links to this city's indexable service/city combo pages, so the crawler has
+    a plain in-content path to reach them (image cards alone are a weak discovery
+    signal on a low-authority site). Gated to cities whose combos are unlocked for
+    indexing — currently Clearwater only (EXP-004).
+  -->
+  {
+    INDEXED_COMBO_CITIES.includes(city.slug) && (
+      <section class="section">
+        <div class="container prose">
+          <h2>Mold Services We Handle in {city.name}</h2>
+          <p>
+            Every piece of a {city.name} mold problem, handled by the same local crew. Go straight to
+            the service that fits what you are dealing with:
+          </p>
+          <ul class="combo-links">
+            {MATRIX_SERVICES.map((s) => (
+              <li>
+                <a href={cityServiceUrl(s, city)}>
+                  {s.name} in {city.name}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    )
+  }
 
   <!-- All matrix services, linking to combo pages for this city -->
   <ServiceCards city={city} />
